@@ -30,26 +30,24 @@ http
     if (req.url === "/api/clientes") {
       res.writeHead(200, { 'Content-Type': 'text/html' });
       const dataClientes = await getDataFromClientes();
-      let id, com, cont, fila = '';
+      let fila = '';
       dataClientes.forEach(element => {
-        id = element.idCliente;
-        com = element.NombreCompania;
-        cont = element.NombreContacto;
-        fila += '<tr><td>' + id + '</td><td>' + com + '</td><td>' + cont + '</td></tr>';
+        fila += `<tr><td>${element.idCliente}</td><td>${element.NombreCompania}</td><td>${element.NombreContacto}</td></tr>`;
       });
       res.end(inicio(readHTML).concat(fila, fin(readHTML)));
     }
-    if (req.url === "/api/proveedores") {
+    else if (req.url === "/api/proveedores") {
       res.writeHead(200, { 'Content-Type': 'text/html' });
       const dataProveerdores = await getDataFromProveedores();
-      let id, com, cont, fila = '';
+      let fila = '';
       dataProveerdores.forEach(element => {
-        id = element.idproveedor;
-        com = element.nombrecompania;
-        cont = element.nombrecontacto;
-        fila += '<tr><td>' + id + '</td><td>' + com + '</td><td>' + cont + '</td></tr>';
+        fila += `<tr><td>${element.idproveedor}</td><td>${element.nombrecompania}</td><td>${element.nombrecontacto}</td></tr>`;
       });
       res.end(inicio(readHTML).concat(fila, fin(readHTML)));
+    }
+    else {
+      res.writeHead(404, { "Content-Type": "text/html" });
+      return res.end("Error buscando el request");
     }
   })
   .listen(8081);
