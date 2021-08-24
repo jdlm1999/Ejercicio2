@@ -28,26 +28,36 @@ async function getDataFromClientes() {
 http
   .createServer(async function (req, res) {
     if (req.url === "/api/clientes") {
-      res.writeHead(200, { 'Content-Type': 'text/html' });
-      const dataClientes = await getDataFromClientes();
-      let fila = '';
-      dataClientes.forEach(element => {
-        fila += `<tr><td>${element.idCliente}</td><td>${element.NombreCompania}</td><td>${element.NombreContacto}</td></tr>`;
-      });
-      res.end(inicio(readHTML).concat(fila, fin(readHTML)));
+      try {
+        res.writeHead(200, { 'Content-Type': 'text/html' });
+        const dataClientes = await getDataFromClientes();
+        let fila = '';
+        dataClientes.forEach(element => {
+          fila += `<tr><td>${element.idCliente}</td><td>${element.NombreCompania}</td><td>${element.NombreContacto}</td></tr>`;
+        });
+        return res.end(inicio(readHTML).concat(fila, fin(readHTML)));
+      } catch (error) {
+        res.writeHead(404, { "Content-Type": "text/html" });
+        return res.end("Error leyendo el archivo de clientes.");
+      }
     }
     else if (req.url === "/api/proveedores") {
-      res.writeHead(200, { 'Content-Type': 'text/html' });
-      const dataProveerdores = await getDataFromProveedores();
-      let fila = '';
-      dataProveerdores.forEach(element => {
-        fila += `<tr><td>${element.idproveedor}</td><td>${element.nombrecompania}</td><td>${element.nombrecontacto}</td></tr>`;
-      });
-      res.end(inicio(readHTML).concat(fila, fin(readHTML)));
+      try {
+        res.writeHead(200, { 'Content-Type': 'text/html' });
+        const dataProveerdores = await getDataFromProveedores();
+        let fila = '';
+        dataProveerdores.forEach(element => {
+          fila += `<tr><td>${element.idproveedor}</td><td>${element.nombrecompania}</td><td>${element.nombrecontacto}</td></tr>`;
+        });
+        return res.end(inicio(readHTML).concat(fila, fin(readHTML)));
+      } catch (error) {
+        res.writeHead(404, { "Content-Type": "text/html" });
+        return res.end("Error leyendo el archivo de proveedores.");
+      }
     }
     else {
       res.writeHead(404, { "Content-Type": "text/html" });
-      return res.end("Error buscando el request");
+      return res.end("Error en la peticion del Request");
     }
   })
   .listen(8081);
